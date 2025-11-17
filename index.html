@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Princess Day</title>
+<style>
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: pink;
+        overflow: hidden;
+    }
+
+    .container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        position: relative;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    button {
+        padding: 12px 25px;
+        border: none;
+        background: hotpink;
+        color: white;
+        font-size: 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: scale(1.1);
+        background: deeppink;
+    }
+
+    .heart {
+        position: fixed;
+        color: red;
+        font-size: 25px;
+        animation: float 3s linear forwards;
+        pointer-events: none;
+    }
+
+    @keyframes float {
+        0% {opacity: 1; transform: translateY(0) scale(1);}
+        100% {opacity: 0; transform: translateY(-150px) scale(1.5);}
+    }
+
+    .compliment {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: 0.8s;
+        font-size: 26px;
+        margin: 10px 0;
+    }
+
+    .compliment.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+<body>
+
+<audio id="bgm" src="music/music.mp3"></audio>
+
+<div id="page1" class="container">
+    <h1>Hi Butki ❤️</h1>
+    <h2>It's Princess Day tomorrow...</h2>
+    <button onclick="nextPage()">Next</button>
+</div>
+
+<div id="page2" class="container hidden">
+    <h1>Can I show you something special? 🫶</h1>
+    <button onclick="playMusicAndNext()">Yes</button>
+</div>
+
+<div id="page3" class="container hidden">
+    <h1>Here are some things I adore about you ❤️</h1>
+    <div id="compliments"></div>
+    <button onclick="nextPage()">Next</button>
+</div>
+
+<div id="page4" class="container hidden">
+    <h1>My Princess 👑</h1>
+    <p style="font-size:22px; max-width:700px;">
+        You are the warmth in my chaos, the softness in my days,
+        and the happiest part of my life.  
+        No matter what happens, no matter where we are,
+        you will always be my princess. ❤️
+    </p>
+    <button onclick="nextPage()">Next</button>
+</div>
+
+<div id="page5" class="container hidden">
+    <h1>Happy Princess Day, Butki ❤️👑</h1>
+    <h2>You mean more than words can say.</h2>
+</div>
+
+<script>
+let currentPage = 1;
+const complimentsList = [
+    "Your smile is the cutest thing ever 😭❤️",
+    "Your voice makes everything better 🫶",
+    "You make my world feel soft and warm 💕",
+    "You are effortlessly adorable, every single day 🌸",
+    "I feel lucky to have you, Butki ❤️"
+];
+
+function nextPage() {
+    document.getElementById("page" + currentPage).classList.add("hidden");
+    currentPage++;
+    document.getElementById("page" + currentPage).classList.remove("hidden");
+
+    if (currentPage === 3) showCompliments();
+}
+
+function playMusicAndNext() {
+    const bgm = document.getElementById("bgm");
+    bgm.play().catch(e => console.log("Autoplay blocked:", e));
+    nextPage();
+}
+
+function showCompliments() {
+    const container = document.getElementById("compliments");
+    container.innerHTML = "";
+
+    complimentsList.forEach((line, index) => {
+        const div = document.createElement("div");
+        div.className = "compliment";
+        div.textContent = line;
+        container.appendChild(div);
+
+        setTimeout(() => {
+            div.classList.add("show");
+            createHeart();
+        }, index * 900);
+    });
+}
+
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "❤️";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.top = window.innerHeight + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 3000);
+}
+</script>
+
+</body>
+</html>
